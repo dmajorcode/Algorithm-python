@@ -1,13 +1,17 @@
-from itertools import combinations
 import sys
-input = sys.stdin.readline
+input=sys.stdin.readline
 
-N, M = map(int, input().split())
+N, M = list(map(int, input().split()))
 
-# target list in range N
-narr = [str(i) for i in range(1,N+1)]
+arr = []
 
-target = combinations(narr, M)
+def dfs(start):
+  if len(arr) == M:
+    print(' '.join(map(str,arr)))
+    return
+  for i in range(start,N+1):
+    arr.append(i)
+    dfs(i+1)
+    arr.pop()
 
-for t in list(target):
-    print(' '.join(list(t)))
+dfs(1)
