@@ -7,18 +7,24 @@ input = sys.stdin.readline
 N,S = list(map(int,input().split()))
 arr = list(map(int, input().split()))
 
+visited = [False]*(N)
 count = 0
 
-def getComb(i):
+def getComb(idx, sumPart):
     global count
-# combinations are tuples like (-7,-3) (-7,-2)
-    picked = list(combinations(arr,i))
-    for pick in picked:
-        pickList = list(pick)
-        if sum(pickList)==S:
-            count+=1
-        
-for i in range(1,N+1):
-    getComb(i)
+    
+    if idx >= N:
+        return
 
+    sumPart+=arr[idx]
+    
+    if sumPart == S:
+        count+=1
+    
+    # 현재 arr[idx]를 선택한 경우
+    getComb(idx+1,sumPart)
+    # 현재 arr[idx]를 선택하지 않은 경우
+    getComb(idx+1,sumPart-arr[idx])
+            
+getComb(0,0)
 print(count)
