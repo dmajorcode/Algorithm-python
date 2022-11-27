@@ -6,30 +6,33 @@ input = sys.stdin.readline
 k = int(input())
 signs = list(map(str,input().split()))
 
-arr = [i for i in range(0,10)]
+visited = [0]*10
+maxArr = ""
+minArr = ""
 
-# maximum = 1e9
-# minimum = -1e9
-checkMaxMin = []
-
-# (1,2,3) (1,2,4) ...
-numParts = list(permutations(arr, k+1))
-
-def check(numPart):
-    global maximum
-    global minimum
-    # be careful for the range
-    for i in range(k):
-        if signs[i] == '>' and numPart[i] <= numPart[i+1]:
-            break;
-        if signs[i] == '<' and numPart[i] >= numPart[i+1]:
-            break;
-    else:
-        partNum = ''.join(list(map(str,numPart))) 
-        checkMaxMin.append(str(partNum))
-
-for numPart in numParts:
-    check(list(map(int,numPart)))
-
-print(max(checkMaxMin))
-print(min(checkMaxMin))
+def check(i,j,sign):
+    if sign == '>':
+        return i>j
+    if sign == '<':
+        return i<j
+    
+def solve(index, s):
+    global maxArr, minArr
+    # should print when
+    if index == (k+1):
+        if len(minArr) ==0:
+            minArr = s
+        else:
+            maxArr = s
+        return 
+        
+    for i in range(10):
+        if visited[i]==0:
+            if index==0 or check(s[-1],str(i),signs[index-1]):
+                visited[i] = True
+                solve(index+1,s+str(i))
+                visited[i] = False
+    
+solve(0,"")
+print(maxArr)
+print(minArr)
